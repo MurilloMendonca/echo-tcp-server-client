@@ -11,7 +11,6 @@ EchoHandler::EchoHandler(int socket, std::string username, std::string password)
     _username = username;
     _password = password;
     _logged_in = true;
-    std::cout << "Client connected" << std::endl;
   }
 
   EchoHandler::~EchoHandler() { close(); }
