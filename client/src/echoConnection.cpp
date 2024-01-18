@@ -39,13 +39,21 @@ bool EchoConnection::login(std::string username, std::string password) {
   }
 
   LoginRequest request = LoginRequest(username, password);
+  std::cout << "Sending login request" << std::endl;
+  request.header.print();
+  std::cout<<request.username<<std::endl;
+  std::cout<<request.password<<std::endl;
   std::vector<char> serializedData = request.serialize();
+  std::cout << "Serialized data size: " << serializedData.size() << std::endl;
   ::send(_socket, serializedData.data(), serializedData.size(), 0);
+  std::cout << "Sent login request" << std::endl;
 
   char buffer[1024];
   ::read(_socket, buffer, 1024);
   LoginResponse response =
       LoginResponse(std::vector<char>(buffer, buffer + 1024));
+  std::cout << "Received login response" << std::endl;
+  std::cout << "Status: " << (unsigned int)response.status << std::endl;
 
   if (response.status == LoginResponse::LoginStatus::OK) {
     _logged_in = true;

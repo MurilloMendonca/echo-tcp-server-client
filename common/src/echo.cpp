@@ -1,4 +1,5 @@
 #include "../include/echo.hpp"
+#include <iostream>
 
 EchoRequest::EchoRequest() { header.type = Header::HeaderType::ECHO_REQUEST; }
 
@@ -38,6 +39,14 @@ std::vector<char> EchoRequest::serialize() {
   return data;
 }
 
+void EchoRequest::print() {
+  std::cout << "EchoRequest: " << std::endl;
+  std::cout << "  Header: " << std::endl;
+  header.print();
+  std::cout << "  Size: " << size << std::endl;
+  std::cout << "  Message: " << message << std::endl;
+}
+
 EchoResponse::EchoResponse() {
   header.type = Header::HeaderType::ECHO_RESPONSE;
 }
@@ -74,4 +83,12 @@ std::vector<char> EchoResponse::serialize() {
   }
   data.insert(data.end(), this->message.begin(), this->message.end());
   return data;
+}
+
+void EchoResponse::print() {
+  std::cout << "EchoResponse: " << std::endl;
+  std::cout << "  Header: " << std::endl;
+  header.print();
+  std::cout << "  Size: " << size << std::endl;
+  std::cout << "  Message: " << message << std::endl;
 }

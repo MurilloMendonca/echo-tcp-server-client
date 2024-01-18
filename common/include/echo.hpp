@@ -18,6 +18,8 @@ struct EchoRequest{
     EchoRequest(std::vector<char> data);
 
     std::vector<char> serialize();
+
+    void print();
 };
 
 struct EchoResponse{
@@ -32,4 +34,6 @@ struct EchoResponse{
     EchoResponse(std::vector<char> data);
 
     std::vector<char> serialize();
+
+    void print();
 };

@@ -13,7 +13,5 @@ public:
 class ExampleLoginValidator : public LoginValidatorInterface
 {
 public:
-    bool validate(const std::string& login, const std::string& password) const override{
-        return true;
-    }
+    bool validate(const std::string& login, const std::string& password) const override;
 };

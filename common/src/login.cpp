@@ -11,7 +11,7 @@ LoginRequest::LoginRequest(std::string username, std::string password) {
 
 LoginRequest::LoginRequest(std::vector<char> data) {
   header = Header(data);
-  int offset = sizeof(header.seq) + sizeof(header.size) + sizeof(header.type);
+  int offset = sizeof(header.seq) + sizeof(header.size) + sizeof(unsigned int);
   char username[32];
   std::strncpy(username, data.data() + offset, 31);
   offset += 32;
@@ -27,13 +27,33 @@ std::vector<char> LoginRequest::serialize() {
   }
   std::vector<char> data;
   int size =
-      sizeof(header.type) + sizeof(header.size) + sizeof(header.seq) + 32 + 32;
+      sizeof(unsigned int) + sizeof(header.size) + sizeof(header.seq) + 32 + 32;
   header.size = size;
   data = header.serialize();
   char username[32];
   std::strncpy(username, this->username.c_str(), 31);
+  //pad with null bytes after /0
+  bool nullByte = false;
+  for (int i = 0; i < 32; ++i) {
+    if (username[i] == '\0') {
+      nullByte = true;
+    }
+    if (nullByte) {
+      username[i] = 0;
+    }
+  }
   char password[32];
   std::strncpy(password, this->password.c_str(), 31);
+
+  nullByte = false;
+  for (int i = 0; i < 32; ++i) {
+    if (password[i] == '\0') {
+      nullByte = true;
+    }
+    if (nullByte) {
+      password[i] = 0;
+    }
+  }
 
   data.insert(data.end(), username, username + 32);
   data.insert(data.end(), password, password + 32);
@@ -62,7 +82,7 @@ LoginResponse::LoginResponse(std::vector<char> data) {
 
 std::vector<char> LoginResponse::serialize() {
   std::vector<char> data;
-  int size = sizeof(header.type) + sizeof(header.size) + sizeof(header.seq) +
+  unsigned int size = sizeof(header.type) + sizeof(header.size) + sizeof(header.seq) +
              sizeof(this->status);
   header.size = size;
   data = header.serialize();

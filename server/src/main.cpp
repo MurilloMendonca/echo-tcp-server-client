@@ -1,6 +1,7 @@
 #include "../include/loginHandler.hpp"
 int main() {
   LoginHandler loginHandler(8989);
-  loginHandler.listen();
+  while(true)
+    loginHandler.listen();
   return 0;
 }

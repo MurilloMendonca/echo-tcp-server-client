@@ -16,6 +16,6 @@ struct Header {
   Header();
   Header(HeaderType type, unsigned int size, unsigned int seq);
   Header(std::vector<char> data);
-  Header(char *data);
   std::vector<char> serialize();
+  void print();
 };
